@@ -5,9 +5,16 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 plt.style.use('seaborn-v0_8-whitegrid')
 # plt.style.use('default')
-# test
+
 st.title('Análise dos dados')
-st.write('Grupo 01: Claudia, Hevans, Voltolini, Renato, Vitor e William')
+st.header('LM Tech Data Talents: Módulo 05 - Estatística II')
+st.markdown('''Grupo 01: 
+* Claudia Cavalcante Fonseca; 
+* Hevans Vinícius Pereira;
+* Lucas Voltolini;
+* Renato Massamitsu Zama Inomata; 
+* Vitor Cunha Cavalcanti Manso;
+* William James Erthal.''')
 
 # Importando dados
 df = pd.read_csv('./dataset/predictive_maintenance.csv')
@@ -16,7 +23,8 @@ colunas = df.columns
 paginas = ['01 - Conjunto de dados', 
            '02 - Contagem de dados', 
            '03 - Distribuições', 
-           '04 - Correlações']
+           '04 - Correlações',
+           '05 - Scatterplots',]
 
 df_failures = df[df.loc[:, 'Failure Type'] != 'No Failure']
 
@@ -27,12 +35,13 @@ with st.sidebar:
 st.header(pg_escolhida)
 # Conjunto de dados
 if pg_escolhida == paginas[0]:
-    # Explicar variáveis?
-
+    
     # Data Frame
+    st.subheader('Dataset')
     st.write(df)
 
     # Dados de df.info()
+    st.subheader('`info()`')
     st.write('Verificando as observações de cada coluna `df.info()`:')
 
     df_info = pd.DataFrame({'Colunas': df.columns,
@@ -42,6 +51,7 @@ if pg_escolhida == paginas[0]:
     st.write(df_info)
 
     # Dados de df.describe()
+    st.subheader('`describe()`')
     st.write('Principais métricas dos dados:')
     st.write(df.describe())
 
@@ -128,11 +138,36 @@ if pg_escolhida == paginas[2]:
 
 # Correlações
 if pg_escolhida == paginas[3]:
-    st.write('Correlações')
-    matriz_corr = df.select_dtypes(include = np.number).drop(columns = 'UDI').corr()
+    st.subheader('Matriz de correlações')
+    df_numeric = df.select_dtypes(include = np.number).drop(columns = 'UDI')
+    matriz_corr = df_numeric.corr()
     st.write(matriz_corr)
-    if st.button('Spoilers'):
-        sns.heatmap(matriz_corr, annot = True, cmap = 'coolwarm')
-        st.pyplot(plt.gcf())
- 
-    
+    sns.heatmap(matriz_corr, annot = True, cmap = 'coolwarm')
+    st.pyplot(plt.gcf())
+
+    st.subheader('Pairplot')
+    sns.pairplot(df.drop(columns = ['Target', 'UDI']), hue = 'Failure Type')
+    st.pyplot(plt.gcf())
+
+if pg_escolhida == paginas[4]:
+    st.subheader('Scatterplots selecionando uma variável')
+    colunas_numericas = ['Air temperature [K]', 'Process temperature [K]',
+                                 'Rotational speed [rpm]', 'Torque [Nm]',
+                                 'Tool wear [min]',]    
+    col_escolhida = st.selectbox('Histogramas e boxplots da variável', colunas_numericas)
+                
+    with st.container():
+        fig = plt.figure(constrained_layout = True, figsize=(16,9))
+        gs = fig.add_gridspec(2, 2)
+
+        grids = [gs[0, 0], gs[0, 1], gs[1, 0], gs[1, 1]]
+
+        colunas_restantes = colunas_numericas.copy()
+        colunas_restantes.remove(col_escolhida)
+        
+        for coluna, grid in zip(colunas_restantes, grids):
+            ax = fig.add_subplot(grid)
+            sns.scatterplot(df, y = col_escolhida, x = coluna, hue = 'Failure Type')
+            ax.set_title(f'Scatterplot `{coluna}` x `{col_escolhida}`')
+
+        st.pyplot(fig)
