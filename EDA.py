@@ -146,7 +146,7 @@ if pg_escolhida == paginas[3]:
     st.pyplot(plt.gcf())
 
     st.subheader('Pairplot')
-    sns.pairplot(df.drop(columns = ['Target', 'UDI']), hue = 'Failure Type')
+    sns.pairplot(df.drop(columns = ['Failure Type', 'UDI']), hue = 'Target')
     st.pyplot(plt.gcf())
 
 if pg_escolhida == paginas[4]:
@@ -167,7 +167,7 @@ if pg_escolhida == paginas[4]:
         
         for coluna, grid in zip(colunas_restantes, grids):
             ax = fig.add_subplot(grid)
-            sns.scatterplot(df, y = col_escolhida, x = coluna, hue = 'Failure Type')
+            sns.scatterplot(df_failures, y = col_escolhida, x = coluna, hue = 'Failure Type')
             ax.set_title(f'Scatterplot `{coluna}` x `{col_escolhida}`')
 
         st.pyplot(fig)
