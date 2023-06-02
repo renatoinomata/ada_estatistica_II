@@ -106,7 +106,7 @@ if pg_escolhida == paginas[2]:
     
     st.markdown('''
 Vamos realizar uma contagem dos dados conforme suas categorias:
-tipo da máquina, falha, e tipo de falha.
+Qualidade do produto da máquina, falha, e tipo de falha.
     ''')
 
     var1 = st.selectbox('Contagem dos valores da variável:', ['Type', 'Target', 'Failure Type'])
@@ -134,7 +134,7 @@ if pg_escolhida == paginas[3]:
 É sempre importante verificar como os dados se distribuem para cada variável, dessa forma
 podemos entender como elas se comportam e se existem outliers no dataset. 
 Nos gráficos abaixo, foram gerados histogramas e boxplots, por variável, 
-e separados por tipo de máquina e falhas ou tipos de falhas detectadas.
+e separados por qualidade do produto e falhas ou tipos de falhas detectadas.
     ''')
     col_escolhida = st.selectbox('Histogramas e boxplots da variável',
                                 [
@@ -151,18 +151,18 @@ e separados por tipo de máquina e falhas ou tipos de falhas detectadas.
                                     ])
     with st.container():
         
-        st.subheader('Gráficos por tipo de máquina')
+        st.subheader('Gráficos por qualidade do produto da máquina')
 
         fig = plt.figure(constrained_layout = True, figsize=(16,9))
         gs = fig.add_gridspec(1, 2)
 
         ax1 = fig.add_subplot(gs[0, 0])
         sns.histplot(df, x = col_escolhida, bins = 'auto', hue = 'Type')
-        ax1.set_title(f'Histograma da variável `{col_escolhida}` por tipo de máquina')
+        ax1.set_title(f'Histograma da variável `{col_escolhida}` por qualidade do produto da máquina')
 
         ax2 = fig.add_subplot(gs[0, 1])
         sns.boxplot(df, y = 'Type', x = col_escolhida, orient = 'h')
-        ax2.set_title(f'Boxplot da variável `{col_escolhida}` por tipo de máquina')
+        ax2.set_title(f'Boxplot da variável `{col_escolhida}` por qualidade do produto da máquina')
 
         st.pyplot(fig)
 
