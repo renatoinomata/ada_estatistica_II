@@ -68,7 +68,7 @@ if pg_escolhida == paginas[1]:
 Os atributos do dataset são:
 
 * UID: Identificador único das máquinas
-* Product ID: A qualidade do produto que a máquina produz, que pode ser baixa(L, 50% dos produtos), 
+* Product ID: A qualidade do produto que a máquina produz, que pode ser baixa (L, 50% dos produtos), 
 média (M, 30% dos produtos) ou alta (H, 20% dos produtos) e um número de série específico para 
 essa variante;
 * Type: Apenas o tipo do produto, sem o ID;
